@@ -1,4 +1,4 @@
-# JanEnMax
+# Clustering Gigydata
 
 This script aims to use the clustering method K-mediods with the Manhattan metric to cluster data from the Gigyanalysis dataset. It utilizes multiple visualizations to arrive at a conclusion about the performance of the clustering method.
 
