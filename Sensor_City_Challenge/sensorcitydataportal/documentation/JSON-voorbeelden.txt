@@ -1,0 +1,108 @@
+(let op dat de tijden in UTC zijn)
+
+Dataplan 1:
+{
+  "username": "zee@softwareinnovations.nl",
+  "password": "hidden",
+  "job": {
+    "name": "dataplan1-bluetooth-02oct",
+    "datetime-start": "2015-oct-02 04:00:00",
+    "datetime-end": "2015-oct-02 20:00:00",
+    "type":"bluetooth",
+    "sensors": [
+      "053-BLT-01",
+      "068-BLT-01",
+      "140-BLT-01",
+      "160-BLT-01",
+      "167-BLT-01"
+    ],
+    "split": 1
+  }
+}
+
+{
+  "username": "zee@softwareinnovations.nl",
+  "password": "hidden",
+  "job": {
+    "name": "dataplan1-bleutooth-03oct",
+    "datetime-start": "2015-oct-03 04:00:00",
+    "datetime-end": "2015-oct-03 20:00:00",
+    "type":"bluetooth",
+    "sensors": [
+      "053-BLT-01",
+      "068-BLT-01",
+      "140-BLT-01",
+      "160-BLT-01",
+      "167-BLT-01"
+    ],
+    "split": 1
+  }
+}
+
+{
+  "username": "zee@softwareinnovations.nl",
+  "password": "hidden",
+  "job": {
+    "name": "dataplan1-audio-02oct",
+    "datetime-start": "2015-oct-02 04:00:00",
+    "datetime-end": "2015-oct-02 20:00:00",
+    "type":"audio",
+    "sensors": [
+      "53-AU-1",
+      "68-AU-1",
+      "140-AU-1",
+      "160-AU-1",
+      "167-AU-1",
+      "111-AU-1",
+      "213-AU-1"
+    ],
+    "split": 1,
+    "bit-depth": 16,
+    "format": "wav"
+  }
+}
+
+{
+  "username": "zee@softwareinnovations.nl",
+  "password": "hidden",
+  "job": {
+    "name": "dataplan1-audio-03oct",
+    "datetime-start": "2015-oct-03 04:00:00",
+    "datetime-end": "2015-oct-03 20:00:00",
+    "type":"audio",
+    "sensors": [
+      "53-AU-1",
+      "68-AU-1",
+      "140-AU-1",
+      "160-AU-1",
+      "167-AU-1",
+      "111-AU-1",
+      "213-AU-1"
+    ],
+    "split": 1,
+    "bit-depth": 16,
+    "format": "wav"
+  }
+}
+
+
+Dataplan 2:
+{
+  "username": "zee@softwareinnovations.nl",
+  "password": "hidden",
+  "job": {
+    "name": "dataplan2-audio-03oct",
+    "datetime-start": "2015-oct-05 21:59:00",
+    "datetime-end": "2015-oct-05 22:03:00",
+    "type":"audio",
+    "sensors": [
+      "53-AU-1",
+      "160-AU-1",
+      "167-AU-1"
+    ],
+    "split": 1,
+    "bit-depth": 16,
+    "format": "wav"
+  }
+}
+

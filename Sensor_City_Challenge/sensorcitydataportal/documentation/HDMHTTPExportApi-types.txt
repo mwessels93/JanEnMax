@@ -1,0 +1,97 @@
+Ondersteunde sensor-types: audio, bluetooth, video, vri, co2, weather
+
+co2 en weather hebben tot zo ver nog geen extra instelbare parameters. Voor de
+overige sensor-types volgen de instelbare parameters. Als deze niet meegegeven
+worden in de export-aanvraag, wordt een standaard waarde ingevuld.
+
+________________________________________________________________________________
+audio
+
+extra parameters:
+---------------------------------------------------------
+key        |  type  | Geaccepteerde waardes | default   |
+---------------------------------------------------------
+format     | string | webm+flac, wav        | webm+flac |
+bit-depth  | int    | 8, 16, 24             | 24        |
+split      | int    | 1 - 60 (in minuten)   | 10        |
+amp-factor | int    | 1 - 500               | 1         |
+multiplex  | bool   | true, false           | false     |
+---------------------------------------------------------
+
+Voorbeeld JSON:
+{
+  "username": "sensorcity",
+  "password": "wachtwoord",
+  "job": {
+    "name": "httpapi-export-test",
+    "datetime-start": "2015-oct-10 10:00:00",
+    "datetime-end": "2015-oct-10 11:00:00",
+    "type":"audio",
+    "sensors": [
+      "Weather-1"90-AU-1
+    ],
+    "format": "webm+flac",
+    "bit-depth": 24,
+    "split": 60,
+    "amp-factor": 5,
+    "multiplex": false
+  }
+}
+
+________________________________________________________________________________
+bluetooth
+
+extra parameters:
+---------------------------------------------------------
+key        |  type  | Geaccepteerde waardes | default   |
+---------------------------------------------------------
+split      | int    | 1 - 60 (in minuten)   | 10        |
+multiplex  | bool   | true, false           | false     |
+---------------------------------------------------------
+
+Voorbeeld JSON:
+{
+  "username": "sensorcity",
+  "password": "wachtwoord",
+  "job": {
+    "name": "httpapi-export-test",
+    "datetime-start": "2015-oct-10 10:00:00",
+    "datetime-end": "2015-oct-10 11:00:00",
+    "type":"bluetooth",
+    "sensors": [
+      "195-BLT-01".
+      "168-BLT-01"
+    ],
+    "split": 60,
+    "multiplex": false
+  }
+}
+
+________________________________________________________________________________
+video
+
+extra parameters:
+---------------------------------------------------------------------
+key                 |  type  | Geaccepteerde waardes    | default  |
+---------------------------------------------------------------------
+format              | string | webm+vp8, avi+jpeg, jpeg | webm+vp8 |
+resolution-scaling  | int    | 1,2,4,8,16               | 1        |
+framerate           | int    | 1-25                     | 15       |
+quality             | int    | 1 - 100                  | 80       |
+split               | int    | 1 - 60 (in minuten)      | 10       |
+multiplex           | bool   | true, false              | false    |
+---------------------------------------------------------------------
+
+________________________________________________________________________________
+VRI
+
+extra parameters:
+---------------------------------------------------------
+key        |  type  | Geaccepteerde waardes | default   |
+---------------------------------------------------------
+format     | string | binary, csv           | binary    |
+split      | int    | 1 - 60 (in minuten)   | 10        |
+multiplex  | bool   | true, false           | false     |
+---------------------------------------------------------
+
+

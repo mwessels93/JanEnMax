@@ -1,0 +1,153 @@
+________________________________________________________________________________
+Introductie
+
+De HTTPExportApi is een HTTP server die uitsluitend communiceert in JSON 
+documenten. Verwacht wordt dat er een JSON document wordt opgestuurd in de HTTP
+'message body'. Het resultaat zal ook een JSON document zijn in de HTTP response
+'message body', of een zip archief in het geval van een export download. 
+
+Met de HTTPExportApi is het mogelijk om via een API data-exports aan te vragen,
+de status van een export op te vragen, en als deze succesvol is om deze te 
+downloaden. In principe zijn dit ook de stappen die men volgt in de normale HDM
+Frontend/dataloket.
+
+
+De authenticatie is zeer basaal opgezet. In elk aanvraag wordt de username en
+password verwacht, op deze manier is er geen sessie-beheer nodig. Zie hieronder
+voor de _altijd_ verwachte velden:
+
+{
+  "username": "sensorcity",
+  "password": "wachtwoord",
+  ....rest van de aanvraag...
+}
+
+Ook zijn de foutmeldingen die de server terug kan geven gestandarizeerd. De 
+eerste indicatie dat er wat fout is met de aanvraag is dat de HTTP-statuscode
+niet OK is (getal 200). Ook is in de JSON-root direct de 'error' key te vinden.
+Naast de opgetreden foutmelding wordt de HTTP-code ook extra vermeld in de JSON.
+
+Gestandariseerd JSON fout-melding:
+{
+  "error": {
+    "http-code": 400,
+    "message": "Job is not downloadable"
+  }
+}
+
+Voor het aanvragen en ontvangen van een export kan het volgende stappenplan
+aangehouden worden:
+-  Vraag een nieuw export aan (http://www.sensorcity-api.kxa.nl/newjob)
+*  Bekijk antwoord. In geval van een HTTP-code 200 onthoud de job::job-id
+-  Poll de status van de job tot deze klaar is 
+   (http://www.sensorcity-api.kxa.nl/status)
+*  Bekijk antwoord. Blijf pollen totdat job::status de "finished" of "error"
+   string bevat. Bij finished ga dan door naar downloaden
+-  Vraag de download aan (http://www.sensorcity-api.kxa.nl/download)
+*  sla de ontvangen *.zip op, pak het uit voor verdere verwerking
+
+Hierboven gaan we steeds verder als er een HTTP-code 200 (OK) staat in het
+antwoord. Bij andere HTTP-codes is of de aanvraag onjuist (JSON-syntax) of is
+de export aanvraag gefaald.
+
+________________________________________________________________________________
+Het aanvragen van een nieuw export
+
+URL: http://sensorcity-api.kxa.nl/newjob
+
+JSON
+{
+  "username": "sensorcity",
+  "password": "wachtwoord",
+  "job": {
+    "name": "httpapi-export-test",
+    "datetime-start": "2015-oct-10 10:00:00",
+    "datetime-end": "2015-oct-10 11:00:00",
+    "type":"weather",
+    "sensors": [
+      "Weather-1"
+    ]
+  }
+}
+
+Antwoord: (HTTP-code 200)
+{
+  job: {
+    job-id: 1800476
+    name: "backend-export-test"
+    status: "waiting"
+  }
+}
+
+In de array sensors kan meerdere sensoren worden aangevraagd. En wordt de exacte
+naam verwacht zoals deze ook in de front-end wordt genoemd.
+De datetime-start/-end worden opgegeven in UTC tijd, de maanden zijn de eerste 3
+karakters in het engels geschreven.
+De syntax is altijd: YYYY-MMM-dd HH:mm:ss met leading-zeros, uren zijn van 
+00 tot 23
+
+Voor elk type export kan er meerdere soorten parameters gezet worden. Zie de 
+HDMHTTPExportApi-types.txt voor meer informatie.
+
+________________________________________________________________________________
+Het opvragen van de status van een export
+
+URL: http://sensorcity-api.kxa.nl/status
+JSON
+{
+  "username": "sensorcity",
+  "password": "wachtwoord",
+  "job-id": 1800476
+}
+
+Antwoord: (HTTP-code 200)
+{
+  "job": {
+    "name": "backend-export-test",
+    "status": "waiting"
+  }
+}
+status veld kan de volgende opties bevatten:
+waiting    : de aangevraagde export moet nog opgepakt worden
+processing : de export wordt op het moment verwerkt
+error      : de export is gefaald en heeft error(s) tegengekomen 
+             (zie hieronder voor JSON voor error message)
+finished   : De export is klaar
+
+Antwoord met een error-veld gezet:
+{
+  "job": {
+    "name": "backend-export-test",
+    "status": "error"
+    "error": "No data available"
+  }
+}
+
+________________________________________________________________________________
+Het downloaden van een klaargezete export
+
+Het downloaden van een export is een vreemde eend in de bijt. 
+Je kan of een gehele ZIP download verwachten als antwoord, of een JSON antwoord 
+met een foutmelding. Het idee is om eerst de http-code te bekijken, als deze 200
+(OK) is dan kan de http body behandeld worden als een .zip file-stream. Is deze
+anders dan bevat de http body een JSON document.
+
+URL: http://sensorcity-api.kxa.nl/download
+JSON
+{
+  "username": "sensorcity",
+  "password": "wachtwoord",
+  "job-id": 346
+}
+Antwoord:
+.zip filestream
+
+Antwoord:
+Wanneer de download (nog) niet klaar is: HTTP-code 400
+{
+  "error": {
+    "http-code": 400,
+    "message": "Job is not downloadable"
+  }
+}
+
